@@ -3,11 +3,10 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "escape": "github:pelikhan/pxt-escape#v0.0.1"
+        "escape": "github:pelikhan/pxt-escape#master"
     },
     "description": "",
     "files": [
-        "main.blocks",
         "main.ts",
         "README.md"
     ],

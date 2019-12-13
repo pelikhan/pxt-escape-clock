@@ -14,10 +14,12 @@ function resetClock() {
     remaining = totalSec
 }
 
+// buttons
 input.onButtonPressed(Button.AB, resetClock)
 input.onButtonPressed(Button.A, addMinute)
 input.onButtonPressed(Button.B, removeMinute)
 
+// radio
 radio.onReceivedBuffer(buffer => {
     switch(buffer[0]) {
         case escape.ADD_MINUTE:
@@ -28,6 +30,13 @@ radio.onReceivedBuffer(buffer => {
             resetClock();
     }
 });
+basic.forever(function() {
+    const b = control.createBuffer(5);
+    b[0] = escape.REMAINING_SECONDS;
+    b.setNumber(NumberFormat.Int32LE, 1, remaining | 0);    
+    radio.sendBuffer(b);
+    basic.pause(1000);
+})
 
 // reset
 resetClock();
@@ -43,14 +52,15 @@ basic.forever(function () {
 // minute display
 basic.forever(function () {
     const elapsed = (input.runningTime() - start) / 1000;
-    remaining = totalSec - elapsed; // minutes
+    remaining = totalSec - elapsed; // seconds
+    // display
     if (remaining > 0) {
         basic.showNumber(Math.ceil(remaining / 60));
-        basic.pause(5000)
     } else {
         while (true) {
             game.addScore(1)
             basic.showIcon(IconNames.Ghost)
         }
     }
+    basic.pause(5000)
 })
