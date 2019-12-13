@@ -2,6 +2,8 @@ let start = input.runningTime()
 let totalSec = 0
 let remaining = 0
 
+basic.showString("CLOCK")
+
 function addMinute() {
     totalSec = Math.max(0, totalSec + 60)
 }
@@ -10,17 +12,18 @@ function removeMinute() {
 }
 function resetClock() {
     start = input.runningTime()
-    totalSec = 360
+    totalSec = escape.TOTAL_SECONDS
     remaining = totalSec
 }
 
 // buttons
 input.onButtonPressed(Button.AB, resetClock)
-input.onButtonPressed(Button.A, addMinute)
-input.onButtonPressed(Button.B, removeMinute)
+input.onButtonPressed(Button.A, removeMinute)
+input.onButtonPressed(Button.B, addMinute)
 
 // radio
 radio.onReceivedBuffer(buffer => {
+    escape.logMessage(buffer)
     switch (buffer[0]) {
         case escape.ADD_MINUTE:
             addMinute(); break;
@@ -35,6 +38,12 @@ basic.forever(function () {
     b[0] = escape.REMAINING_SECONDS;
     b.setNumber(NumberFormat.Int32LE, 1, remaining | 0);
     radio.sendBuffer(b);
+    basic.pause(10)
+    if (remaining < 0) {
+        const bo = pins.createBuffer(1)
+        bo[0] = escape.TIME_OVER
+        radio.sendBuffer(bo)
+    }
     basic.pause(1000);
 })
 
