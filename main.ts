@@ -3,7 +3,7 @@ let totalSec = 0
 let remaining = 0
 
 function addMinute() {
-    totalSec = Math.max(0, totalSec + 60)    
+    totalSec = Math.max(0, totalSec + 60)
 }
 function removeMinute() {
     totalSec = Math.max(0, totalSec - 60)
@@ -21,19 +21,19 @@ input.onButtonPressed(Button.B, removeMinute)
 
 // radio
 radio.onReceivedBuffer(buffer => {
-    switch(buffer[0]) {
+    switch (buffer[0]) {
         case escape.ADD_MINUTE:
-            addMinute();
+            addMinute(); break;
         case escape.REMOVE_MINUTE:
-            removeMinute();
+            removeMinute(); break;
         case escape.RESET_CLOCK:
-            resetClock();
+            resetClock(); break;
     }
 });
-basic.forever(function() {
+basic.forever(function () {
     const b = control.createBuffer(5);
     b[0] = escape.REMAINING_SECONDS;
-    b.setNumber(NumberFormat.Int32LE, 1, remaining | 0);    
+    b.setNumber(NumberFormat.Int32LE, 1, remaining | 0);
     radio.sendBuffer(b);
     basic.pause(1000);
 })
