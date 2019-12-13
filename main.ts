@@ -1,18 +1,36 @@
-radio.setGroup(42)
-
 let start = input.runningTime()
-let totalSec = 360
-let remaining = totalSec
+let totalSec = 0
+let remaining = 0
 
-input.onButtonPressed(Button.AB, function () {
-    start = input.runningTime()
-})
-input.onButtonPressed(Button.A, function () {
+function addMinute() {
+    totalSec = Math.max(0, totalSec + 60)    
+}
+function removeMinute() {
     totalSec = Math.max(0, totalSec - 60)
-})
-input.onButtonPressed(Button.B, function () {
-    totalSec = Math.max(0, totalSec + 60)
-})
+}
+function resetClock() {
+    start = input.runningTime()
+    totalSec = 360
+    remaining = totalSec
+}
+
+input.onButtonPressed(Button.AB, resetClock)
+input.onButtonPressed(Button.A, addMinute)
+input.onButtonPressed(Button.B, removeMinute)
+
+radio.onReceivedBuffer(buffer => {
+    switch(buffer[0]) {
+        case escape.ADD_MINUTE:
+            addMinute();
+        case escape.REMOVE_MINUTE:
+            removeMinute();
+        case escape.RESET_CLOCK:
+            resetClock();
+    }
+});
+
+// reset
+resetClock();
 
 // second ticker
 basic.forever(function () {

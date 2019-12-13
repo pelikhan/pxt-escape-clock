@@ -2,7 +2,8 @@
     "name": "escape-clock",
     "dependencies": {
         "core": "*",
-        "radio": "*"
+        "radio": "*",
+        "escape": "github:pelikhan/pxt-escape#v0.0.1"
     },
     "description": "",
     "files": [
