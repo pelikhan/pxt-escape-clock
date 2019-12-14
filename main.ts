@@ -10,14 +10,15 @@ function addMinute() {
 function removeMinute() {
     totalSec = Math.max(0, totalSec - 60)
 }
-function resetClock() {
+function reset() {
     start = input.runningTime()
     totalSec = escape.TOTAL_SECONDS
     remaining = totalSec
 }
+reset()
 
 // buttons
-input.onButtonPressed(Button.AB, resetClock)
+input.onButtonPressed(Button.AB, reset)
 input.onButtonPressed(Button.A, removeMinute)
 input.onButtonPressed(Button.B, addMinute)
 
@@ -26,11 +27,15 @@ radio.onReceivedBuffer(buffer => {
     escape.logMessage(buffer)
     switch (buffer[0]) {
         case escape.ADD_MINUTE:
-            addMinute(); break;
+            addMinute(); 
+            break;
         case escape.REMOVE_MINUTE:
-            removeMinute(); break;
+            removeMinute(); 
+            break;
         case escape.RESET_CLOCK:
-            resetClock(); break;
+        case escape.RESET:
+            reset(); 
+            break;
     }
 });
 basic.forever(function () {
@@ -46,9 +51,6 @@ basic.forever(function () {
     }
     basic.pause(1000);
 })
-
-// reset
-resetClock();
 
 // second ticker
 basic.forever(function () {
