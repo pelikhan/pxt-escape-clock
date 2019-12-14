@@ -67,11 +67,9 @@ basic.forever(function () {
     // display
     if (remaining > 0) {
         basic.showNumber(Math.ceil(remaining / 60));
+        basic.pause(2000)
     } else {
-        while (true) {
-            game.addScore(1)
-            basic.showIcon(IconNames.Ghost)
-        }
+        game.addScore(1)
+        basic.showIcon(IconNames.Ghost)
     }
-    basic.pause(5000)
 })
