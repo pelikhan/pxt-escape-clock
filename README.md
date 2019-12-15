@@ -1,6 +1,7 @@
 # pxt-escape-clock ![Build status badge](https://github.com/pelikhan/pxt-escape-clock/workflows/MakeCode/badge.svg)
 
-
+This extensions is part the [escape](https://github.com/pelikhan/pxt-escape) 
+room system. It provides the clock element.
 
 ## Use this extension
 
