@@ -1,6 +1,7 @@
 let start = input.runningTime()
 let totalSec = 0
 let remaining = 0
+let won = false;
 
 basic.showString("CLOCK")
 
@@ -14,6 +15,7 @@ function reset() {
     start = input.runningTime()
     totalSec = escape.TOTAL_SECONDS
     remaining = totalSec
+    won = false
 }
 reset()
 
@@ -32,6 +34,9 @@ radio.onReceivedBuffer(buffer => {
         case escape.REMOVE_MINUTE:
             removeMinute();
             break;
+        case escape.BOMB_DEACTIVATED:
+            won = true;
+            break;            
         case escape.RESET_CLOCK:
         case escape.RESET:
             reset();
@@ -65,11 +70,14 @@ basic.forever(function () {
     const elapsed = (input.runningTime() - start) / 1000;
     remaining = totalSec - elapsed; // seconds
     // display
-    if (remaining > 0) {
-        basic.showNumber(Math.ceil(remaining / 60));
-        basic.pause(2000)
+    if (won) {
+        escape.showWin();
+    } else if (remaining > 0) {
+        const min = Math.ceil(remaining / 60)
+        if (remaining > 5)
+            basic.showString("TIME ")
+        basic.showNumber(min);
     } else {
-        game.addScore(1)
-        basic.showIcon(IconNames.Ghost)
+        escape.showLose();
     }
 })
