@@ -1,37 +1,13 @@
-let start = input.runningTime()
-let totalSec = escape.TOTAL_SECONDS
-let remaining = totalSec
-let won = false;
+let remaining = escape.TOTAL_SECONDS
 
 basic.showString("CLOCK")
 
-escape.onEvent(escape.ADD_MINUTE, function() {
-    totalSec = Math.max(0, totalSec + 60)
-});
-escape.onEvent(escape.REMOVE_MINUTE, function() {
-    totalSec = Math.max(0, totalSec - 60)    
-});
-
-// time counting
-basic.forever(function () {
-    const b = control.createBuffer(5);
-    b[0] = escape.REMAINING_SECONDS;
-    b.setNumber(NumberFormat.Int32LE, 1, remaining | 0);
-    radio.sendBuffer(b);
-    basic.pause(10)
-
-    if (remaining <= 0) {
-        const bo = pins.createBuffer(1)
-        bo[0] = escape.TIME_OVER
-        radio.sendBuffer(bo)
-    }
-    basic.pause(1000);
+escape.onMessageReceived((msg, data) => {
+    if (msg == escape.REMAINING_SECONDS)
+        remaining = data.getNumber(NumberFormat.UInt32LE, 0);
 })
-
 // minute display
 escape.onUpdate(function () {
-    const elapsed = (input.runningTime() - start) / 1000;
-    remaining = Math.max(0, totalSec - elapsed); // seconds
     const min = Math.ceil(remaining / 60)
     if (remaining > 5)
         basic.showString("TIME ")
