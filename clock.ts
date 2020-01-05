@@ -9,8 +9,8 @@ escape.onMessageReceived((msg, data) => {
 // minute display
 escape.onUpdate(function () {
     const min = Math.ceil(remaining / 60)
-    if (remaining > 5)
-        basic.showString("TIME " + min + " MIN")
+    if (remaining >= 10)
+        basic.showString("TIME" + min + "MIN")
     else
         basic.showNumber(min);
 })
